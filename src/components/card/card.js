@@ -5,11 +5,8 @@ import React from 'react'
 import './card.css'
 import './media-card.css'
 import Genres from '../genres/genres'
-import SearchEngine from '../../services/searchEngine'
 
 export default class CardMovie extends React.Component {
-  searchEngine = new SearchEngine()
-
   constructor(props) {
     super(props)
     this.state = {
@@ -18,14 +15,6 @@ export default class CardMovie extends React.Component {
     }
     this.titleRef = React.createRef()
   }
-
-  // componentDidMount() {
-  //   const titleElement = this.titleRef.current
-  //   console.log(titleElement.offsetHeight) // one row equals 28px ,2 rows 56px ,3 8 rows 84 and so on
-
-  //   // use setState
-  //   // and then for each 28px, truncateText to extra 20chars for each row
-  // }
 
   truncateText = (text, len = 130) => {
     if (text.length > len) {
@@ -62,8 +51,18 @@ export default class CardMovie extends React.Component {
   }
 
   render() {
-    const { name, description, dateOfCreation, imageAddress, genreIds, genresList, rating, movieId, ratingStars } =
-      this.props
+    const {
+      name,
+      description,
+      dateOfCreation,
+      imageAddress,
+      genreIds,
+      genresList,
+      rating,
+      movieId,
+      ratingStars,
+      rateMovie,
+    } = this.props
     let classNamesRating = 'rating'
     if (rating < 3) {
       classNamesRating += ' red-border'
@@ -105,7 +104,8 @@ export default class CardMovie extends React.Component {
           <Rate
             onChange={(value) => {
               this.setState({ starsCount: value })
-              this.searchEngine.rateMovie(value, movieId)
+              rateMovie(value, movieId)
+              // this.searchEngine.rateMovie(value, movieId)
             }}
             style={{ fontSize: 17 }}
             count={10}

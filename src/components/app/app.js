@@ -120,7 +120,7 @@ export default class App extends React.Component {
       {
         key: 1,
         label: 'Search',
-        children: [loadedPage],
+        children: loadedPage,
       },
       {
         key: 2,
