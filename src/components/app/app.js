@@ -58,20 +58,20 @@ export default class App extends React.Component {
     })
   }
 
-  onInputChange = async (e) => {
-    await this.setState({
+  onInputChange = (e) => {
+    this.setState({
       value: e.target.value,
     })
   }
 
-  async onChangingPage(e) {
-    await this.setState({
+  onChangingPage(e) {
+    this.setState({
       page: e,
     })
   }
 
-  async onChangingPageRanked(e) {
-    await this.setState({
+  onChangingPageRanked(e) {
+    this.setState({
       pageRanked: e,
     })
   }
