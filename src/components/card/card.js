@@ -85,7 +85,7 @@ export default class CardMovie extends React.Component {
         <div className="image-container">
           <Spin className={classNameSpin} />
           <img
-            src={imageAddress ? `https://image.tmdb.org/t/p/w500${imageAddress}` : '/errorImg.jpg'}
+            src={imageAddress ? `https://image.tmdb.org/t/p/w500${imageAddress}` : 'assets/errorImg.jpg'}
             alt="#"
             className="movie-poster"
             onLoad={this.onLoadedImage}
