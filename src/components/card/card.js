@@ -3,40 +3,35 @@ import { format } from 'date-fns'
 import React from 'react'
 
 import './card.css'
+import './media-card.css'
 import Genres from '../genres/genres'
 import SearchEngine from '../../services/searchEngine'
-
-// import errorImg from './errorImg.jpg'
 
 export default class CardMovie extends React.Component {
   searchEngine = new SearchEngine()
 
-  state = {
-    starsCount: 0,
-    isImageLoaded: false,
-  }
-
-  cutLastChar = (text) => {
-    let res = text.slice(0, -1)
-    if (res.slice(-1) === ' ' || res.slice(-1) === ',') {
-      return this.cutLastChar(res)
+  constructor(props) {
+    super(props)
+    this.state = {
+      starsCount: 0,
+      isImageLoaded: false,
     }
-    return res
+    this.titleRef = React.createRef()
   }
 
-  cutTextDescription = (text, maxLength) => {
-    let truncated = text.substr(0, maxLength)
-    if (text.length <= maxLength) {
-      return text
-    }
-    return this.cutLastChar(truncated) + '...'
-  }
+  // componentDidMount() {
+  //   const titleElement = this.titleRef.current
+  //   console.log(titleElement.offsetHeight) // one row equals 28px ,2 rows 56px ,3 8 rows 84 and so on
 
-  truncateText = (text) => {
-    if (text.length > 150) {
-      const lastSpaceIndex = text.lastIndexOf(' ', 150)
+  //   // use setState
+  //   // and then for each 28px, truncateText to extra 20chars for each row
+  // }
+
+  truncateText = (text, len = 130) => {
+    if (text.length > len) {
+      const lastSpaceIndex = text.lastIndexOf(' ', len)
       if (lastSpaceIndex === -1) {
-        text = text.slice(0, 150)
+        text = text.slice(0, len)
       } else {
         text = text.slice(0, lastSpaceIndex)
       }
@@ -99,7 +94,9 @@ export default class CardMovie extends React.Component {
 
         <div className="card-info">
           <div className="title-container">
-            <p className="title">{name}</p>
+            <p className="title" ref={this.titleRef}>
+              {name}
+            </p>
             <div className={classNamesRating}>{rating.toFixed(1)}</div>
           </div>
           <p className="date-of-creation">{this.translateDateToFormat(dateOfCreation)}</p>
@@ -110,10 +107,12 @@ export default class CardMovie extends React.Component {
               this.setState({ starsCount: value })
               this.searchEngine.rateMovie(value, movieId)
             }}
+            style={{ fontSize: 17 }}
             count={10}
             className="rate"
             value={this.state.starsCount || ratingStars}
             allowHalf={true}
+            // allowClear
           />
         </div>
       </Card>

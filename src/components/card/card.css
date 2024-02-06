@@ -1,77 +1,86 @@
-.ant-card-body{
-    display: flex;
-    padding: 0;
+.ant-card {
+  height: 279px;
 }
 
-.movie-poster{
-    max-width:183px;
-    height:auto;
+.ant-card-body {
+  display: flex;
+}
+.ant-card .ant-card-body {
+  padding: 0;
+}
+.movie-poster {
+  max-width: 183px;
+  /* height: auto; */
+  height: 100%;
 }
 
-p{  
-    font-size: 12px;
-    line-height: 28px;
-    letter-spacing: 0em;
-    text-align: left;
-    font-family:'Inter', sans-serif;
+p {
+  font-size: 12px;
+  line-height: 28px;
+  letter-spacing: 0em;
+  text-align: left;
+  font-family: 'Inter', sans-serif;
 }
 
-.date-of-creation{
-    font-size: 12px;
-    line-height: 22px;
-    color: rgba(130, 126, 126, 1);
-    margin: 0;
+.date-of-creation {
+  font-size: 12px;
+  line-height: 22px;
+  color: rgba(130, 126, 126, 1);
+  margin: 0;
 }
 
-.title-container{
-    display: flex;
+.title-container {
+  display: flex;
 }
 
-.title{
-    width: 130px;
-    color: rgba(0, 0, 0, 1);
-    font-size: 16px;
-    margin-bottom: 7px;
+.title {
+  /* width: 130px; */
+  color: rgba(0, 0, 0, 1);
+  font-size: 16px;
+  /* margin-top: 40px; */
+  margin-bottom: 7px;
 }
 
-.movie-card{
-    margin:0;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
-    width: 454px;
-    display: flex;
-    align-items: center;
+.movie-card {
+  margin: 0;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+  /* width: 451px; */
+  display: flex;
+  align-items: center;
 }
 
-.description{
-    margin: 0;
+.description {
+  margin-right: 20px;
 }
 
 .rating {
-    margin-left: auto;
-    border-radius: 50%;
-    border: 2px solid black;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
+  margin-left: auto;
+  border-radius: 50%;
+  border: 2px solid black;
+  min-width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+
+  margin-right: 9px;
 }
 
-.red-border{
-    border-color:#E90000 ;
+.red-border {
+  border-color: #e90000;
 }
 
-.orange-border{
-    border-color: #E97E00;
+.orange-border {
+  border-color: #e97e00;
 }
 
-.yellow-border{
-    border-color: #E9D100;
+.yellow-border {
+  border-color: #e9d100;
 }
 
-.green-border{
-    border-color: #66E900;
+.green-border {
+  border-color: #66e900;
 }
 
 .movie-title {
@@ -109,17 +118,38 @@ p{
   color: gold;
 }
 
-.hidden{
-    display: none;
+.hidden {
+  display: none;
 }
 
-.image-container{
-    width: 183px;
-    height: 281px;
-    margin-right: 20px;
+.image-container {
+  width: 183px;
+  /* width: 160px; */
+  height: 281px;
+  margin-right: 20px;
 }
 
-.spin{
-    margin-top: 20px;
-    align-self: center;
+.spin {
+  margin-top: 20px;
+  align-self: center;
+}
+.title-container {
+  align-items: center;
+  justify-content: space-between;
+  /* justify-content: center; */
+}
+.card-info {
+  padding-top: 10px;
+  max-height: 260px;
+  position: relative;
+}
+
+.ant-rate {
+  position: absolute;
+  z-index: 100;
+  background-color: white;
+  /* background-color: #66e900; */
+  bottom: -10px;
+
+  left: 0;
 }

@@ -142,19 +142,21 @@ export default class App extends React.Component {
 
     return (
       <div className="app">
-        <Provider value={this.state.genresList}>
-          <Tabs
-            defaultActiveKey="1"
-            items={tabsElements}
-            onChange={async (e) => {
-              if (e == 2) {
-                await this.getRankedList()
-              }
-            }}
-            className="tabs"
-            destroyInactiveTabPane={true}
-          />
-        </Provider>
+        <div className="container">
+          <Provider value={this.state.genresList}>
+            <Tabs
+              defaultActiveKey="1"
+              items={tabsElements}
+              onChange={async (e) => {
+                if (e == 2) {
+                  await this.getRankedList()
+                }
+              }}
+              className="tabs"
+              destroyInactiveTabPane={true}
+            />
+          </Provider>
+        </div>
       </div>
     )
   }

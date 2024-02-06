@@ -1,0 +1,29 @@
+@media screen and (max-width: 1010px) {
+  .image-container {
+    max-height: 91px;
+    max-width: 60px;
+  }
+  .ant-card-body {
+    margin-left: 10px;
+    margin-top: 5px;
+  }
+  .card-info {
+    position: static;
+  }
+  .description {
+    margin-left: -75px;
+  }
+
+  .movie-card {
+    display: block;
+    position: relative;
+  }
+  .ant-rate {
+    /* position: relative; */
+
+    position: absolute;
+
+    bottom: 9px;
+    left: 130px;
+  }
+}

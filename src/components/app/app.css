@@ -1,25 +1,26 @@
-.app{
-    background-color: rgba(255, 255, 255, 1);
-    margin-top: 0;
-    margin-bottom: 0;
-    justify-content: center;
-    width: 1010px;
-    margin-left: auto;
-    margin-right: auto;
+.app {
 }
 
-.spin{
-    margin-top: 40%;
+.spin {
+  margin-top: 40%;
 }
 
-.pagination{
-    display: flex;
-    justify-content: center;
-    padding-bottom: 20px;
-    padding-top: 40px;
+.pagination {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 20px;
+  padding-top: 40px;
 }
 
-.ant-tabs-nav-list{
-    margin-right: auto;
-    margin-left: auto;
+.ant-tabs-nav-list {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.container {
+  /* background-color: rebeccapurple; */
+  background-color: rgba(255, 255, 255, 1);
+  max-width: 1010px;
+  min-width: 425px;
+  margin: 0 auto;
 }

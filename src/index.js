@@ -9,7 +9,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <React.Fragment>
     <Online>
-      <App className="app" />
+      <App className="app container" />
     </Online>
     <Offline>
       <div className="abstract-about-connection">
