@@ -62,6 +62,7 @@ export default class CardMovie extends React.Component {
       movieId,
       ratingStars,
       rateMovie,
+      guestToken,
     } = this.props
     let classNamesRating = 'rating'
     if (rating < 3) {
@@ -104,7 +105,7 @@ export default class CardMovie extends React.Component {
           <Rate
             onChange={(value) => {
               this.setState({ starsCount: value })
-              rateMovie(value, movieId)
+              rateMovie(value, movieId, guestToken)
               // this.searchEngine.rateMovie(value, movieId)
             }}
             style={{ fontSize: 17 }}

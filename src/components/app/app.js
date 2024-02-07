@@ -22,6 +22,22 @@ export default class App extends React.Component {
     error: false,
     value: '',
     genresList: [],
+    guestToken: '',
+  }
+
+  componentDidMount() {
+    this.updateElementsDefault(1)
+
+    this.searchEngine.getGuestToken().then((res) => {
+      // console.log(res)
+      this.setState({ guestToken: res })
+    })
+
+    this.searchEngine.getGenreList().then((res) => {
+      this.setState({
+        genresList: res,
+      })
+    })
   }
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -53,9 +69,8 @@ export default class App extends React.Component {
   }
 
   async updateElementsDefault(page) {
-    await this.searchEngine.getResource(page).then((res) => {
-      this.setState({ elements: res.elements, isLoading: false, totalPages: res.maxPage })
-    })
+    const res = await this.searchEngine.getResource(page)
+    this.setState({ elements: res.elements, isLoading: false, totalPages: res.maxPage })
   }
 
   onInputChange = (e) => {
@@ -77,24 +92,10 @@ export default class App extends React.Component {
   }
 
   getRankedList = async () => {
-    await this.searchEngine.getRatedMovies(this.state.pageRanked).then(({ results, totalPagesRanked }) => {
-      this.setState({ elementsRanked: results, totalPagesRanked: totalPagesRanked * 10 })
-    })
-  }
-
-  constructor() {
-    super()
-    this.updateElementsDefault(1)
-    this.searchEngine.getGenreList().then((res) => {
-      this.setState(() => {
-        return {
-          genresList: res,
-        }
-      })
-    })
-    if (!localStorage.getItem('guestToken')) {
-      this.searchEngine.getGuestToken()
-    }
+    const { pageRanked, guestToken } = this.state
+    const res = await this.searchEngine.getRatedMovies(pageRanked, guestToken)
+    console.log(res)
+    this.setState({ elementsRanked: res.results, totalPagesRanked: res.totalPagesRanked * 10 })
   }
 
   render() {
@@ -143,7 +144,7 @@ export default class App extends React.Component {
     return (
       <div className="app">
         <div className="container">
-          <Provider value={this.state.genresList}>
+          <Provider value={{ genresList: this.state.genresList, guestToken: this.state.guestToken }}>
             <Tabs
               defaultActiveKey="1"
               items={tabsElements}

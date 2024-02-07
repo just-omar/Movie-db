@@ -10,11 +10,11 @@ export default class CardList extends React.Component {
 
   render() {
     const { data } = this.props
-    const { rateMovie } = this.searchEngine // Destructuring rateMovie from searchEngine
+    const { rateMovie } = this.searchEngine
 
     return (
       <Consumer>
-        {(value) => (
+        {(obj) => (
           <div className="card-list">
             {data.map((el) => (
               <CardMovie
@@ -24,11 +24,12 @@ export default class CardList extends React.Component {
                 dateOfCreation={el.release_date}
                 imageAddress={el.poster_path}
                 genreIds={el.genre_ids}
-                genresList={value}
+                genresList={obj.genresList}
                 rating={el.vote_average}
                 movieId={el.id}
                 ratingStars={el.rating}
                 rateMovie={rateMovie}
+                guestToken={obj.guestToken}
               />
             ))}
           </div>
