@@ -2,7 +2,7 @@ import React from 'react'
 
 import CardMovie from '../card/card'
 import './card-list.css'
-import { Consumer } from '../context/context'
+import { Consumer } from '../../context/context'
 import SearchEngine from '../../services/searchEngine'
 
 export default class CardList extends React.Component {

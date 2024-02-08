@@ -21,6 +21,9 @@ export default class SearchEngine {
     const url = `${BASE_URL}/authentication/guest_session/new`
     const queryParams = new URLSearchParams({ api_key: API_KEY })
     const result = await fetch(`${url}?${queryParams}`)
+    if (!result.ok) {
+      throw new Error(`Failed to get guest token:status ${result.status}`)
+    }
     const body = await result.json()
     return body.guest_session_id
   }
@@ -29,8 +32,10 @@ export default class SearchEngine {
     const url = `${BASE_URL}/genre/movie/list`
     const queryParams = new URLSearchParams({ api_key: API_KEY, language: 'en-US' })
     const result = await fetch(`${url}?${queryParams}`)
+    if (!result.ok) {
+      throw new Error(`Failed to get genre list:status ${result.status}`)
+    }
     const body = await result.json()
-    // console.log(body)
     this.genreList = body.genres
     return this.genreList
   }
@@ -39,6 +44,9 @@ export default class SearchEngine {
     const url = `${BASE_URL}/trending/movie/week`
     const queryParams = new URLSearchParams({ api_key: API_KEY, page, sort_by: 'created_at.desc' })
     const result = await fetch(`${url}?${queryParams}`)
+    if (!result.ok) {
+      throw new Error(`Failed to get trending movies:status ${result.status}`)
+    }
     const body = await result.json()
     return { elements: body.results, maxPage: body.total_pages }
   }
@@ -53,6 +61,9 @@ export default class SearchEngine {
       page,
     })
     const result = await fetch(`${url}?${queryParams}`)
+    if (!result.ok) {
+      throw new Error(`Failed to search movies:status ${result.status}`)
+    }
     const body = await result.json()
     return { elements: body.results, maxPage: body.total_pages }
   }
@@ -61,7 +72,6 @@ export default class SearchEngine {
     const pathParams = { movieId }
     const queryParams = new URLSearchParams({ api_key: API_KEY, guest_session_id: guestToken })
     const url = `${BASE_URL}/movie/${pathParams.movieId}/rating?${queryParams}`
-    console.log(url)
     const resp = await fetch(url, {
       method: 'POST',
       headers: {
@@ -69,13 +79,14 @@ export default class SearchEngine {
       },
       body: JSON.stringify({ value: stars }),
     })
+    if (!resp.ok) {
+      throw new Error(`Failed to rate movie:status ${resp.status}`)
+    }
     const respStatusObj = await resp.json()
-
     console.log({ movieId, ...respStatusObj })
   }
 
   async getRatedMovies(page, guestToken) {
-    console.log(guestToken)
     const pathParams = { guestToken }
     const queryParams = new URLSearchParams({
       api_key: API_KEY,
@@ -84,10 +95,12 @@ export default class SearchEngine {
       page,
     })
     const url = `${BASE_URL}/guest_session/${pathParams.guestToken}/rated/movies?${queryParams}`
-    console.log(url)
     const result = await fetch(url)
+    if (!result.ok) {
+      console.log(result)
+      throw new Error(`Failed to get rated movies:status ${result.status}`)
+    }
     const { results, total_pages } = await result.json()
-    // console.log({ results, totalPagesRanked: total_pages })
     return { results, totalPagesRanked: total_pages }
   }
 }

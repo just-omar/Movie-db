@@ -4,7 +4,7 @@ import { Spin, Pagination, Tabs } from 'antd'
 import CardList from '../card-list/card-list'
 import SearchEngine from '../../services/searchEngine'
 import SearchForm from '../search-form/search-form'
-import { Provider } from '../context/context'
+import { Provider } from '../../context/context'
 
 import './app.css'
 
