@@ -3,6 +3,9 @@
     max-height: 91px;
     max-width: 60px;
   }
+  .movie-poster {
+    max-width: 60px;
+  }
   .ant-card-body {
     margin-left: 10px;
     margin-top: 5px;
