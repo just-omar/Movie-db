@@ -40,7 +40,7 @@ export default class App extends React.Component {
         })
       })
     } catch (err) {
-      this.setState({ error: true, errorMessage: err.message })
+      this.handleError(err.message)
     }
   }
 
@@ -66,7 +66,7 @@ export default class App extends React.Component {
         this.getRankedList()
       }
     } catch (err) {
-      this.setState({ error: true, errorMessage: err.message })
+      this.handleError(err.message)
     }
   }
 
@@ -76,7 +76,7 @@ export default class App extends React.Component {
         this.setState({ elements: res.elements, isLoading: false, totalPages: res.maxPage })
       })
     } catch (err) {
-      this.setState({ error: true, errorMessage: err.message })
+      this.handleError(err.message)
     }
   }
 
@@ -85,10 +85,12 @@ export default class App extends React.Component {
       const res = await this.searchEngine.getResource(page)
       this.setState({ elements: res.elements, isLoading: false, totalPages: res.maxPage })
     } catch (err) {
-      this.setState({ error: true, errorMessage: err.message })
+      this.handleError(err.message)
     }
   }
-
+  handleError(message) {
+    this.setState({ error: true, errorMessage: message })
+  }
   handleClose = () => {
     this.setState({ error: false })
   }
@@ -117,7 +119,7 @@ export default class App extends React.Component {
       // console.log(res)
       this.setState({ elementsRanked: res.results, totalPagesRanked: res.totalPagesRanked * 10 })
     } catch (err) {
-      this.setState({ error: true, errorMessage: err.message })
+      this.handleError(err.message)
     }
   }
 
