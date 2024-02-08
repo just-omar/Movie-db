@@ -16,14 +16,15 @@ export default class App extends React.Component {
     elementsRanked: [],
     page: 1,
     pageRanked: 1,
-    totalPages: 50,
-    totalPagesRanked: 10,
+    totalPages: null,
+    totalPagesRanked: null,
     isLoading: true,
     error: false,
     errorMessage: '',
     value: '',
     genresList: [],
     guestToken: '',
+    // pageSize: 1,
   }
 
   componentDidMount() {
@@ -82,8 +83,8 @@ export default class App extends React.Component {
 
   async updateElementsDefault(page) {
     try {
-      const res = await this.searchEngine.getResource(page)
-      this.setState({ elements: res.elements, isLoading: false, totalPages: res.maxPage })
+      const { elements, maxPage } = await this.searchEngine.getResource(page)
+      this.setState({ elements, isLoading: false, totalPages: maxPage })
     } catch (err) {
       this.handleError(err.message)
     }
@@ -94,21 +95,32 @@ export default class App extends React.Component {
   handleClose = () => {
     this.setState({ error: false })
   }
+  // onPageSizeChange = (pageSize) => {
+  //   const { elements, page } = this.state
+  //   const totalElements = elements.length
+  //   const newTotalPages = Math.ceil(totalElements / pageSize)
+  //   this.setState({
+  //     pageSize: pageSize,
+  //     totalPages: newTotalPages,
+  //     page: Math.min(page, newTotalPages),
+  //   })
+  // }
+
   onInputChange = (e) => {
     this.setState({
       value: e.target.value,
     })
   }
 
-  onChangingPage(e) {
+  onChangingPage(p) {
     this.setState({
-      page: e,
+      page: p,
     })
   }
 
-  onChangingPageRanked(e) {
+  onChangingPageRanked(p) {
     this.setState({
-      pageRanked: e,
+      pageRanked: p,
     })
   }
 
@@ -117,13 +129,14 @@ export default class App extends React.Component {
       const { pageRanked, guestToken } = this.state
       const res = await this.searchEngine.getRatedMovies(pageRanked, guestToken)
       // console.log(res)
-      this.setState({ elementsRanked: res.results, totalPagesRanked: res.totalPagesRanked * 10 })
+      this.setState({ elementsRanked: res.results, totalPagesRanked: res.totalPagesRanked })
     } catch (err) {
       this.handleError(err.message)
     }
   }
 
   render() {
+    console.log(this.state.totalPages)
     const loadedPage = this.state.isLoading ? (
       <Spin size="large" tip="loading..." className="spin">
         <div />
@@ -131,14 +144,17 @@ export default class App extends React.Component {
     ) : (
       <React.Fragment>
         <SearchForm value={this.state.value} onInputChange={this.onInputChange} />
-        <CardList data={this.state.elements} />
         <Pagination
           className="pagination"
-          defaultCurrent={1}
           total={this.state.totalPages}
           current={this.state.page}
           onChange={(e) => this.onChangingPage(e)}
+          showSizeChanger={false}
+          defaultPageSize={1}
+          // pageSizeOptions={[1, 2, 5]}
+          // onShowSizeChange={(current, size) => this.onPageSizeChange(size)} // Handle page size change
         />
+        <CardList data={this.state.elements} />
       </React.Fragment>
     )
 
@@ -156,10 +172,12 @@ export default class App extends React.Component {
             <CardList data={this.state.elementsRanked} />
             <Pagination
               className="pagination"
-              defaultCurrent={1}
               total={this.state.totalPagesRanked}
               current={this.state.pageRanked}
+              showSizeChanger={false}
               onChange={(e) => this.onChangingPageRanked(e)}
+              defaultPageSize={1}
+              // pageSizeOptions={[1, 2, 5]}
             />
           </React.Fragment>
         ),

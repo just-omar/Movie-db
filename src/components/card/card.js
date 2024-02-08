@@ -89,6 +89,10 @@ export default class CardMovie extends React.Component {
             alt="#"
             className="movie-poster"
             onLoad={this.onLoadedImage}
+            onError={(e) => {
+              e.target.onerror = null
+              e.target.src = 'assets/errorImg.jpg'
+            }}
           />
         </div>
 

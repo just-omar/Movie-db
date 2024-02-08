@@ -48,6 +48,7 @@ export default class SearchEngine {
       throw new Error(`Failed to get trending movies:status ${result.status}`)
     }
     const body = await result.json()
+    console.log(body)
     return { elements: body.results, maxPage: body.total_pages }
   }
 
@@ -65,6 +66,7 @@ export default class SearchEngine {
       throw new Error(`Failed to search movies:status ${result.status}`)
     }
     const body = await result.json()
+    console.log(body)
     return { elements: body.results, maxPage: body.total_pages }
   }
 
