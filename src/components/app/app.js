@@ -136,7 +136,6 @@ export default class App extends React.Component {
   }
 
   render() {
-    console.log(this.state.totalPages)
     const loadedPage = this.state.isLoading ? (
       <Spin size="large" tip="loading..." className="spin">
         <div />
@@ -152,7 +151,7 @@ export default class App extends React.Component {
           showSizeChanger={false}
           defaultPageSize={1}
           // pageSizeOptions={[1, 2, 5]}
-          // onShowSizeChange={(current, size) => this.onPageSizeChange(size)} // Handle page size change
+          // onShowSizeChange={(current, size) => this.onPageSizeChange(size)}
         />
         <CardList data={this.state.elements} />
       </React.Fragment>
