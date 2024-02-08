@@ -1,5 +1,5 @@
 import React from 'react'
-import { Spin, Pagination, Tabs } from 'antd'
+import { Spin, Pagination, Tabs, Alert } from 'antd'
 
 import CardList from '../card-list/card-list'
 import SearchEngine from '../../services/searchEngine'
@@ -20,59 +20,78 @@ export default class App extends React.Component {
     totalPagesRanked: 10,
     isLoading: true,
     error: false,
+    errorMessage: '',
     value: '',
     genresList: [],
     guestToken: '',
   }
 
   componentDidMount() {
-    this.updateElementsDefault(1)
-
-    this.searchEngine.getGuestToken().then((res) => {
-      // console.log(res)
-      this.setState({ guestToken: res })
-    })
-
-    this.searchEngine.getGenreList().then((res) => {
-      this.setState({
-        genresList: res,
+    try {
+      this.updateElementsDefault(1)
+      this.searchEngine.getGuestToken().then((res) => {
+        // console.log(res)
+        this.setState({ guestToken: res })
       })
-    })
+
+      this.searchEngine.getGenreList().then((res) => {
+        this.setState({
+          genresList: res,
+        })
+      })
+    } catch (err) {
+      this.setState({ error: true, errorMessage: err.message })
+    }
   }
 
   componentDidUpdate = (prevProps, prevState) => {
-    if (prevState.value !== this.state.value) {
-      this.updateElementsBySearch(this.state.value, 1)
-      this.setState({
-        page: 1,
-      })
-    }
-    if (prevState.page !== this.state.page && this.state.value !== '') {
-      this.updateElementsBySearch(this.state.value, this.state.page)
-    }
-    if (prevState.page !== this.state.page && this.state.value.length === 0) {
-      this.updateElementsDefault(this.state.page)
-    }
-    if (prevState.value !== this.state.value && this.state.value.length === 0) {
-      this.updateElementsDefault(1)
-      this.setState({ page: 1 })
-    }
-    if (prevState.pageRanked !== this.state.pageRanked) {
-      this.getRankedList()
+    try {
+      if (prevState.value !== this.state.value) {
+        this.updateElementsBySearch(this.state.value, 1)
+        this.setState({
+          page: 1,
+        })
+      }
+      if (prevState.page !== this.state.page && this.state.value !== '') {
+        this.updateElementsBySearch(this.state.value, this.state.page)
+      }
+      if (prevState.page !== this.state.page && this.state.value.length === 0) {
+        this.updateElementsDefault(this.state.page)
+      }
+      if (prevState.value !== this.state.value && this.state.value.length === 0) {
+        this.updateElementsDefault(1)
+        this.setState({ page: 1 })
+      }
+      if (prevState.pageRanked !== this.state.pageRanked) {
+        this.getRankedList()
+      }
+    } catch (err) {
+      this.setState({ error: true, errorMessage: err.message })
     }
   }
 
   async updateElementsBySearch(value, page) {
-    await this.searchEngine.getFilmBySearching(value, page).then((res) => {
-      this.setState({ elements: res.elements, isLoading: false, totalPages: res.maxPage })
-    })
+    try {
+      await this.searchEngine.getFilmBySearching(value, page).then((res) => {
+        this.setState({ elements: res.elements, isLoading: false, totalPages: res.maxPage })
+      })
+    } catch (err) {
+      this.setState({ error: true, errorMessage: err.message })
+    }
   }
 
   async updateElementsDefault(page) {
-    const res = await this.searchEngine.getResource(page)
-    this.setState({ elements: res.elements, isLoading: false, totalPages: res.maxPage })
+    try {
+      const res = await this.searchEngine.getResource(page)
+      this.setState({ elements: res.elements, isLoading: false, totalPages: res.maxPage })
+    } catch (err) {
+      this.setState({ error: true, errorMessage: err.message })
+    }
   }
 
+  handleClose = () => {
+    this.setState({ error: false })
+  }
   onInputChange = (e) => {
     this.setState({
       value: e.target.value,
@@ -92,10 +111,14 @@ export default class App extends React.Component {
   }
 
   getRankedList = async () => {
-    const { pageRanked, guestToken } = this.state
-    const res = await this.searchEngine.getRatedMovies(pageRanked, guestToken)
-    console.log(res)
-    this.setState({ elementsRanked: res.results, totalPagesRanked: res.totalPagesRanked * 10 })
+    try {
+      const { pageRanked, guestToken } = this.state
+      const res = await this.searchEngine.getRatedMovies(pageRanked, guestToken)
+      // console.log(res)
+      this.setState({ elementsRanked: res.results, totalPagesRanked: res.totalPagesRanked * 10 })
+    } catch (err) {
+      this.setState({ error: true, errorMessage: err.message })
+    }
   }
 
   render() {
@@ -144,19 +167,23 @@ export default class App extends React.Component {
     return (
       <div className="app">
         <div className="container">
-          <Provider value={{ genresList: this.state.genresList, guestToken: this.state.guestToken }}>
-            <Tabs
-              defaultActiveKey="1"
-              items={tabsElements}
-              onChange={async (e) => {
-                if (e == 2) {
-                  await this.getRankedList()
-                }
-              }}
-              className="tabs"
-              destroyInactiveTabPane={true}
-            />
-          </Provider>
+          {!this.state.error ? (
+            <Provider value={{ genresList: this.state.genresList, guestToken: this.state.guestToken }}>
+              <Tabs
+                defaultActiveKey="1"
+                items={tabsElements}
+                onChange={async (e) => {
+                  if (e == 2) {
+                    await this.getRankedList()
+                  }
+                }}
+                className="tabs"
+                destroyInactiveTabPane={true}
+              />
+            </Provider>
+          ) : (
+            <Alert message={this.state.errorMessage} type="error" closable afterClose={this.handleClose} />
+          )}
         </div>
       </div>
     )

@@ -82,8 +82,8 @@ export default class SearchEngine {
     if (!resp.ok) {
       throw new Error(`Failed to rate movie:status ${resp.status}`)
     }
-    const respStatusObj = await resp.json()
-    console.log({ movieId, ...respStatusObj })
+    // const respStatusObj = await resp.json()
+    // console.log({ movieId, ...respStatusObj })
   }
 
   async getRatedMovies(page, guestToken) {
@@ -97,7 +97,6 @@ export default class SearchEngine {
     const url = `${BASE_URL}/guest_session/${pathParams.guestToken}/rated/movies?${queryParams}`
     const result = await fetch(url)
     if (!result.ok) {
-      console.log(result)
       throw new Error(`Failed to get rated movies:status ${result.status}`)
     }
     const { results, total_pages } = await result.json()
