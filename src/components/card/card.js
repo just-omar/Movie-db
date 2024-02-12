@@ -5,6 +5,7 @@ import React from 'react'
 import './card.css'
 import './media-card.css'
 import Genres from '../genres/genres'
+import NotFoundImg from '../../assets/errorImg.jpg'
 
 export default class CardMovie extends React.Component {
   constructor(props) {
@@ -85,14 +86,14 @@ export default class CardMovie extends React.Component {
         <div className="image-container">
           <Spin className={classNameSpin} />
           <img
-            src={imageAddress ? `https://image.tmdb.org/t/p/w500${imageAddress}` : 'assets/errorImg.jpg'}
+            src={imageAddress ? `https://image.tmdb.org/t/p/w500${imageAddress}` : NotFoundImg}
             alt="#"
             className="movie-poster"
             onLoad={this.onLoadedImage}
-            onError={(e) => {
-              e.target.onerror = null
-              e.target.src = 'assets/errorImg.jpg'
-            }}
+            // onError={(e) => {
+            //   e.target.onerror = null
+            //   e.target.src = '../../assets/errorImg.jpg'
+            // }}
           />
         </div>
 
