@@ -9,23 +9,29 @@ export default class SearchEngine {
   }
 
   async initialize() {
-    if (!this.guestToken) {
-      await this.getGuestToken()
-    }
     if (!this.genreList) {
       await this.getGenreList()
     }
   }
 
   async getGuestToken() {
-    const url = `${BASE_URL}/authentication/guest_session/new`
-    const queryParams = new URLSearchParams({ api_key: API_KEY })
-    const result = await fetch(`${url}?${queryParams}`)
-    if (!result.ok) {
-      throw new Error(`Failed to get guest token:status ${result.status}`)
+    let guestToken = localStorage.getItem('guestToken')
+
+    if (!guestToken) {
+      const url = `${BASE_URL}/authentication/guest_session/new`
+      const queryParams = new URLSearchParams({ api_key: API_KEY })
+      const result = await fetch(`${url}?${queryParams}`)
+      if (!result.ok) {
+        throw new Error(`Failed to get guest token:status ${result.status}`)
+      }
+      const body = await result.json()
+      const token = body.guest_session_id
+      localStorage.setItem('guestToken', token)
+
+      return token
+    } else {
+      return guestToken
     }
-    const body = await result.json()
-    return body.guest_session_id
   }
 
   async getGenreList() {
